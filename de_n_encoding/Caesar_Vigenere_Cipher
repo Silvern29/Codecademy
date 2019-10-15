@@ -1,0 +1,86 @@
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+marks = "!.?,;-' "
+
+
+def c_encoding(message, offset):
+    encoded = ""
+
+    for ltr in message:
+        if ltr in marks:
+            encoded += ltr
+        else:
+            encoded += alphabet[(alphabet.find(ltr) - int(offset)) % 26]
+    print(encoded)
+
+
+def c_decoding(message, offset):
+    decoded = ''
+
+    for ltr in message:
+        if ltr in marks:
+            decoded += ltr
+        else:
+            decoded += alphabet[(alphabet.find(ltr) + int(offset))% 26]
+    print(decoded)
+
+
+def v_encoding(message, keyword):
+    encoded = ''
+    keyword_string = keyword * int((len(message) / len(keyword)) + 1)
+
+    for i in range(len(message)):
+        if message[i] in marks:
+            encoded += message[i]
+        else:
+            encoded += alphabet[(alphabet.find(message[i]) + alphabet.find(keyword_string[i])) % 26]
+    print(encoded)
+
+
+def v_decoding(message, keyword):
+    decoded = ''
+    keyword_string = keyword * int((len(message) / len(keyword)) + 1)
+
+    for i in range(len(message)):
+        if message[i] in marks:
+            decoded += message[i]
+        else:
+            decoded += alphabet[(alphabet.find(message[i]) - alphabet.find(keyword_string[i]) + 26) % 26]
+    print(decoded)
+
+
+def c_brute_force(message, offset_range):
+    for offset in range(int(offset_range)):
+        print(offset)
+        c_decoding(message, offset)
+
+
+def encryption():
+    choice = input('What do you want to do?\n[1] Encode with Caesar Cipher\n[2] Decode with Caesar Cipher\n[3] Encode with Vigenère Cipher\n[4] Decode with Vigenère Cipher\n')
+    message = input('Please write your message: ')
+
+    if choice == '1':
+        offset = input('Please tell us the offset for your encryption: ')
+        c_encoding(message, offset)
+    elif choice == '2':
+        choice2 = input('Do you know the offset?\n[Y]es or [N]o: ')
+        if choice2 == 'y':
+            offset = input('Please tell us the offset for your decryption: ')
+            c_decoding(message, offset)
+        elif choice2 == 'n':
+            c_brute_force(message, 26)
+    elif choice == '3':
+        keyword = input('Please write your keyword: ')
+        v_encoding(message, keyword)
+    elif choice == '4':
+        keyword = input('Please write your keyword: ')
+        v_decoding(message, keyword)
+    else:
+        print('Please choose again!')
+        encryption()
+
+encryption()
+input()
+
+
+
+
